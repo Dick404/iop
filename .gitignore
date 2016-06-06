@@ -1,0 +1,9 @@
+#python
+*.pyc
+*.pyo
+
+*.rpm
+*.tar.gz
+*.whl
+iop
+web

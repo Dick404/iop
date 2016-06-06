@@ -1,0 +1,38 @@
+=====================================================================================================================================================================
+ Package                                       Arch                            Version                                        Repository                        Size
+=====================================================================================================================================================================
+Installing:
+ nfs-utils                                     x86_64                          1:1.3.0-0.21.el7_2                             updates                          371 k
+ rpcbind                                       x86_64                          0.2.0-33.el7_2                                 updates                           57 k
+Updating:
+ dracut                                        x86_64                          033-360.el7_2                                  updates                          311 k
+ initscripts                                   x86_64                          9.49.30-1.el7_2.2                              updates                          429 k
+Installing for dependencies:
+ gssproxy                                      x86_64                          0.4.1-7.el7                                    base                              84 k
+ keyutils                                      x86_64                          1.5.8-3.el7                                    base                              54 k
+ libbasicobjects                               x86_64                          0.1.1-25.el7                                   base                              24 k
+ libcollection                                 x86_64                          0.6.2-25.el7                                   base                              40 k
+ libini_config                                 x86_64                          1.2.0-25.el7                                   base                              59 k
+ libnfsidmap                                   x86_64                          0.25-12.el7                                    base                              46 k
+ libpath_utils                                 x86_64                          0.2.1-25.el7                                   base                              27 k
+ libref_array                                  x86_64                          0.1.5-25.el7                                   base                              26 k
+ libtalloc                                     x86_64                          2.1.5-1.el7_2                                  updates                           34 k
+ libtevent                                     x86_64                          0.9.26-1.el7_2.1                               updates                           33 k
+ libtirpc                                      x86_64                          0.2.4-0.6.el7                                  base                              85 k
+ libverto-tevent                               x86_64                          0.2.5-4.el7                                    base                             9.0 k
+ quota                                         x86_64                          1:4.01-11.el7_2.1                              updates                          178 k
+ quota-nls                                     noarch                          1:4.01-11.el7_2.1                              updates                           90 k
+ tcp_wrappers                                  x86_64                          7.6-77.el7                                     base                              78 k
+Updating for dependencies:
+ device-mapper                                 x86_64                          7:1.02.107-5.el7_2.2                           updates                          252 k
+ device-mapper-libs                            x86_64                          7:1.02.107-5.el7_2.2                           updates                          305 k
+ dracut-config-rescue                          x86_64                          033-360.el7_2                                  updates                           49 k
+ dracut-network                                x86_64                          033-360.el7_2                                  updates                           90 k
+ kmod                                          x86_64                          20-5.el7                                       base                             114 k
+ libgudev1                                     x86_64                          219-19.el7_2.9                                 updates                           66 k
+ systemd                                       x86_64                          219-19.el7_2.9                                 updates                          5.1 M
+ systemd-libs                                  x86_64                          219-19.el7_2.9                                 updates                          358 k
+ systemd-sysv                                  x86_64                          219-19.el7_2.9                                 updates                           53 k
+
+Transaction Summary
+=====================================================================================================================================================================
