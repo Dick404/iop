@@ -17,6 +17,7 @@ def config(ip,token):
 	    configs_new.append(re.sub(r"= ?.*$","= "+ip,config))
 	elif re.match(r"auth_uri\ ?=\ ?http://.*",config):
             configs_new.append(re.sub(r"= .*$","= http://"+ip+":5000/v2.0",config))
+	    configs_new.append(re.sub(r"= .*$","= http://"+ip+":5000/v2.0",config))
 	elif re.match(r"os_auth_url\ ?=\ ?http://.*",config):
 	    configs_new.append(re.sub(r"= ?.*$","= http://"+ip+":5000/v2.0",config))
 	elif re.match(r"telemetry_secret\ ?=\ ?.*",config):
