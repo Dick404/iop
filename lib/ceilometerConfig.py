@@ -16,13 +16,13 @@ def config(ip,token):
 	elif re.match(r"rabbit_host(.?)=(.?).*",config):
 	    configs_new.append(re.sub(r"= ?.*$","= "+ip,config))
 	elif re.match(r"auth_uri\ ?=\ ?http://.*",config):
-	    configs_new.append(re.sub(r"= .*$","= "+ip+":5000/v2.0",config))
+	    configs_new.append(re.sub(r"= .*$","= http://"+ip+":5000/v2.0",config))
 	elif re.match(r"os_auth_url\ ?=\ ?http://.*",config):
 	    configs_new.append(re.sub(r"= ?.*$","= http://"+ip+":5000/v2.0",config))
 	elif re.match(r"telemetry_secret\ ?=\ ?.*",config):
 	    configs_new.append(re.sub(r"= ?.*$","= "+"d3188d9532688b941fa7",config))
         elif re.match(r"identity_uri\ ?=\ ?http://.*",config):
-            configs_new.append(re.sub(r"= ?.*$","= "+ip+":35357",config))
+            configs_new.append(re.sub(r"= ?.*$","= http://"+ip+":35357",config))
 	else :
 	    configs_new.append(config)
     writer.writelines(configs_new)
