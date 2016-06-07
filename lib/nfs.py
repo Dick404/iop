@@ -16,7 +16,7 @@ class nfs_server():
         self.__Excute("yum install -y nfs-utils")
 
     def run(self):
-        self.__Excute("systemctl start rpcbind.service;systemctl start nfs-server.service")
+        self.__Excute("systemctl restart rpcbind.service;systemctl restart nfs-server.service")
         return True
 
     def config(self,ips,dev):
@@ -41,12 +41,13 @@ class nfs_server():
             if re.match(r"Disk /dev/.*",d):
                 x = re.search(r"Disk /dev/\w+: (\d+\.\d+)GB",d)
                 size = x.group(1)
-        self.__Excute("parted -s "+dev+" parted -s /dev/sdc mklabel msdos")
+        self.__Excute("parted -s "+dev+" mklabel msdos")
         self.__Excute("parted -s "+dev+" mkpart primary 1 "+size)
         self.__Excute("mkfs.ext4 "+dev+"1")
-        self.__Excute("mount "+dev+" /storage")
+        self.__Excute("mount "+dev+"1 /storage")
         writer = open("/etc/fstab","a+")
         writer.write(dev+" /storage ext4 rw 0 0\n")
+        writer.close()
         return
 
     def init(self,ips,dev):
@@ -70,7 +71,7 @@ class nfs_client():
 
     def run(self,ips):
         for ip in ips:
-            self.__Excute("ssh "+ip+" systemctl start rpcbind.service")
+            self.__Excute("ssh "+ip+" systemctl restart rpcbind.service")
 
         return
 
@@ -84,12 +85,12 @@ class nfs_client():
                 x=re.search(r"    inet (\d+\.\d+\.\d+\.\d+)/.*$",d)
                 local_ip.append(x.group(1))
         for ip in ips:
-            self.__Excute("ssh "+ip+" mount -t nfs4 "+local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0]+":/ /storage")
-            self.__Excute("ssh "+ip+" echo "+local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0]+":/ /storage nfs4 rw,hard,intr,proto=tcp,port=2049,noauto 0 0 >> /etc/fstab")     #fstab arguments need check
+            self.__Excute("ssh "+ip+" mount -t nfs4 "+(local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0])+":/ /storage")
+            self.__Excute("ssh "+ip+" echo \""+(local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0])+":/ /storage nfs4 rw,hard,intr,proto=tcp,port=2049,noauto 0 0 \">> /etc/fstab")     #fstab arguments need check
 
    def init(self,ips):
        for ip in ips:
-           self.__Excute("ssh "+ip+" if [ ! -x /storage ];then\n mkdir /storage \n fi")
+           self.__Excute("ssh "+ip+" \"if [ ! -x /storage ];then\n mkdir /storage \n fi\"")
        self.config(ips)
        
 if __name__ == "__main__":

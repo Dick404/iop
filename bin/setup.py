@@ -13,6 +13,7 @@ ssh = reload(ssh_shake).ssh_shake()
 from optparse import OptionParser as op
 from setup_yum import yum_installer as yum
 import worker_setup as worker
+import ha_setup
 
 def dependence():
     os.system("tar zxvf ./tools/pip-8.1.1.tar.gz -C /opt/")
@@ -158,7 +159,7 @@ def main():
         Y.set_yum_source(ips_worker,proxy)
         record.record("yum-source")
     worker.main(ips_worker,proxy)
-
+    ha_setup.main(ips,dev[0],monitor)
 
 #    dependence()
 #    ssh_belive_eachother()

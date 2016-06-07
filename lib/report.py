@@ -23,8 +23,12 @@ class recorder():
         tasks = reader.readlines()
         reader.close()
         for task_solve in tasks:
+<<<<<<< HEAD
+            if task_solve == (task+"\n"):
+=======
             if task_solve == (task+"\n") or task_solve == task:
 		print "+++++++++++++++++++++++++++++++++++++++++++++++"
+>>>>>>> ef9a2dc2c96edb177139717b326ae6e4c6d13781
                 return False
         return True
 

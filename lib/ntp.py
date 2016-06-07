@@ -5,6 +5,7 @@ import os
 import re
 import logging as log
 from testUnit import tester 
+
 class ntp():
 
     __Excute = None
@@ -13,7 +14,7 @@ class ntp():
         self.__Excute=os.system
         return
 
-    def install(self,ips,monitor==None):
+    def install(self,ips,monitor=None):
 	self.__Excute("yum install -y ntp")
         for ip in ips:
             self.__Excute("ssh "+ip+" yum install -y ntp")
@@ -40,7 +41,7 @@ class ntp():
                 local_ip.append(temp.group(1))
 
         for ip in ips:
-            self.__Excute("ssh "+ip+" echo 0 */1 * * * root ntpdate "+local_ip[0]+" >> /etc/crontab")
+            self.__Excute("ssh "+ip+" echo \"0 */1 * * * root ntpdate "+local_ip[0]+"\">> /etc/crontab")
         return
     
 if __name__ == "__main__":

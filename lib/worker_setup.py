@@ -19,22 +19,22 @@ def main(ips,proxy):
     R = rabbit()
     I = iop()
     S = swift()
-    if E.test("mysql-install\n"):
+    if E.test("mysql-install"):
         M.install_mysql(ips)
         E.record("mysql-install")
-    if E.test("mysql-config\n"):
+    if E.test("mysql-config"):
         M.operator(ips)
         E.record("mysql-config")
-    if E.test("rabbitmq\n"):
+    if E.test("rabbitmq"):
         R.operator(ips)
         E.record("rabbitmq")
-    if E.test("iop-web\n"):
+    if E.test("iop-web"):
         I.config(ips,proxy)
         E.record("iop-web")
-    if E.test("swift-install\n"):
+    if E.test("swift-install"):
 	S.install(ips)
         E.record("swift-install")
-    if E.test("swift-config\n"):
+    if E.test("swift-config"):
         S.config(ips,proxy)
         E.record("swift-config")
     return
