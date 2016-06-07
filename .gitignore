@@ -3,7 +3,7 @@
 *.pyo
 
 *.rpm
-*.tar.gz
+#*.tar.gz
 *.whl
 iop
 web
