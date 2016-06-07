@@ -83,27 +83,40 @@ class keystone():
 	    pass
 
 
-    def create_script(self,ip):
-	reader = open("./config/admin-openrc.sh","r")
-	writer = open("/root/iop/admin-openrc.sh",'w')
-	text = reader.readlines()
-	reader.close()
-	writer.writelines(text)
-	info = "export OS_AUTH_URL=http://"+ip+":5000/v3"
-	writer.write(info)
-	writer.close()
-	os.system("chmod +x admin-openrc.sh")
-	os.system("source ~/iop/admin-openrc.sh")
-	return 
-
+    def create_keystone_script(self,ip):
+    	reader = open("./config/admin-openrc.sh","r")
+    	writer = open("/root/admin-openrc.sh",'w')
+    	text = reader.readlines()
+    	reader.close()
+    	writer.writelines(text)
+    	info = "export OS_AUTH_URL=http://"+ip+":5000/v2.0"
+    	writer.write(info)
+    	writer.close()
+    	os.system("chmod +x /root/admin-openrc.sh")
+    	os.system("source /root/admin-openrc.sh")
+    	return 
+    
+    def create_ceilometer_script(self,ip):
+        reader = open("./config/ceilometer-openrc.sh","r")
+        writer = open("/root/iop/ceilometer-openrc.sh",'w')
+        text = reader.readlines()
+        reader.close()
+        writer.writelines(text)
+        info = "export OS_AUTH_URL=http://"+ip+":5000"
+        writer.write(info)
+        writer.close()
+        os.system("chmod +x /root/ceilometer-openrc.sh")
+        #os.system("source /root/ceilometer-openrc.sh")
+        return 
 
     def main(self,ip):
-        print "hello"
+        print "begin keystone install"
         self.install_keystone()
         self.set_keystone(ip)
         self.create_service_API(ip,token)
         self.create_PUR(ip)
-        self.create_script(ip)
+        self.create_keystone_script(ip)
+        self.create_ceilometer_script(ip)
         ceilometerOrder = ceilometer.ceilomter()
         ceilometerOrder.main(ip,token)
 
@@ -132,13 +145,42 @@ class mariaDB():
         self.run()
         self.init()
 
+class RabbitMQ(object):
+
+    """docstring for RabbitMQ"""
+
+    __Excute = None
+
+    def __init__(self):
+        self.__Excute = os.system
+    
+    def install(self):
+        self.__Excute("yum -y install rabbitmq-server")
+        return
+
+    def init(self):
+        self.__Excute("rabbitmq-plugins enable rabbitmq_management;systemctl enable rabbitmq-server;systemctl start rabbitmq-server;")
+        self.__Excute("rabbitmqctl add_user openstack 123456a?;rabbitmqctl set_user_tags openstack administrator")
+        return
+
+    def run(self):
+        self.__Excute("systemctl start rabbitmq-server;")
+        return
+
+    def operator(self):
+        self.install()
+        self.run()
+        self.init()
+
 if __name__ == "__main__":
     if len(sys.argv)==1:
         raise Exception("less arguments or illegal arguments!")
     else:
         ip = sys.argv[1]
         mysql = mariaDB()
+        rabbitmq = RabbitMQ()
     mysql.operator()
+    rabbitmq.operator()
     installer = keystone()
     installer.main(ip)
 
