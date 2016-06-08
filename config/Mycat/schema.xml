@@ -36,10 +36,6 @@
         <dataHost name="mariadb" maxCon="900" minCon="90" balance="1" writeType="0" switchType="3"  dbType="mysql" dbDriver="native">
 		<heartbeat>show status like 'wsrep%'</heartbeat>
 		<!-- can have multi write hosts -->
-	   <writeHost host="hostM1" url="10.110.19.240:3306" user="root" password="123456a?">
-	   </writeHost>
-	   <writeHost host="hostM2" url="10.110.19.241:3306" user="root" password="123456a?">
-	   </writeHost>
 	</dataHost>
 
 </mycat:schema>
