@@ -132,11 +132,7 @@ class mariaDB():
         return
 
     def config(self,monit="127.0.0.1"):
-<<<<<<< HEAD
         self.__Excute("scp config/my_keystone.cnf root@"+monit+":/etc/my.cnf")
-=======
-        self.__Excute("scp conifg/my.cnf root@"+monit+":/etc/")
->>>>>>> de24ae71343cd4cbe5565a3a70ad8b762c84c5c0
         return
 
     def init(self,monit):
@@ -145,11 +141,7 @@ class mariaDB():
         return
 
     def run(self,monit):
-<<<<<<< HEAD
         self.__Excute("ssh "+monit+" /etc/init.d/mysql restart")
-=======
-        self.__Excute("ssh "+monit+" systemctl start mariadb.service")
->>>>>>> de24ae71343cd4cbe5565a3a70ad8b762c84c5c0
         return
 
     def operator(self,monit="127.0.0.1"):
