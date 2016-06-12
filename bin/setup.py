@@ -14,6 +14,7 @@ from optparse import OptionParser as op
 from setup_yum import yum_installer as yum
 import worker_setup as worker
 import ha_setup
+from iop_web import iopWeb as iop
 
 def dependence():
     os.system("tar zxvf ./tools/pip-8.1.1.tar.gz -C /opt/")
@@ -160,6 +161,7 @@ def main():
         record.record("yum-source")
     worker.main(ips_worker,proxy)
     ha_setup.main(ips_worker,dev[0].split("\n")[0],monitor)
+    iop().run(ips_worker)
 
 #    dependence()
 #    ssh_belive_eachother()
