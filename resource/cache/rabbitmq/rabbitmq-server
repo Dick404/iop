@@ -1,0 +1,30 @@
+===============================================================================================================================================================================================
+ Package                                                Arch                                     Version                                           Repository                             Size
+===============================================================================================================================================================================================
+Installing:
+ rabbitmq-server                                        noarch                                   3.3.5-17.el7                                      IOP                                   4.0 M
+Installing for dependencies:
+ erlang-asn1                                            x86_64                                   R16B-03.13.el7                                    IOP                                   757 k
+ erlang-compiler                                        x86_64                                   R16B-03.13.el7                                    IOP                                   1.0 M
+ erlang-crypto                                          x86_64                                   R16B-03.13.el7                                    IOP                                    85 k
+ erlang-erts                                            x86_64                                   R16B-03.13.el7                                    IOP                                   2.5 M
+ erlang-hipe                                            x86_64                                   R16B-03.13.el7                                    IOP                                   2.4 M
+ erlang-inets                                           x86_64                                   R16B-03.13.el7                                    IOP                                   800 k
+ erlang-kernel                                          x86_64                                   R16B-03.13.el7                                    IOP                                   1.1 M
+ erlang-mnesia                                          x86_64                                   R16B-03.13.el7                                    IOP                                   700 k
+ erlang-os_mon                                          x86_64                                   R16B-03.13.el7                                    IOP                                   114 k
+ erlang-otp_mibs                                        x86_64                                   R16B-03.13.el7                                    IOP                                    32 k
+ erlang-public_key                                      x86_64                                   R16B-03.13.el7                                    IOP                                   537 k
+ erlang-runtime_tools                                   x86_64                                   R16B-03.13.el7                                    IOP                                   179 k
+ erlang-sasl                                            x86_64                                   R16B-03.13.el7                                    IOP                                   293 k
+ erlang-sd_notify                                       x86_64                                   0.1-1.el7                                         IOP                                   9.1 k
+ erlang-snmp                                            x86_64                                   R16B-03.13.el7                                    IOP                                   1.5 M
+ erlang-ssl                                             x86_64                                   R16B-03.13.el7                                    IOP                                   587 k
+ erlang-stdlib                                          x86_64                                   R16B-03.13.el7                                    IOP                                   2.2 M
+ erlang-syntax_tools                                    x86_64                                   R16B-03.13.el7                                    IOP                                   336 k
+ erlang-tools                                           x86_64                                   R16B-03.13.el7                                    IOP                                   565 k
+ erlang-xmerl                                           x86_64                                   R16B-03.13.el7                                    IOP                                   997 k
+ lksctp-tools                                           x86_64                                   1.0.13-3.el7                                      IOP                                    87 k
+
+Transaction Summary
+===============================================================================================================================================================================================

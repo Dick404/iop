@@ -1,0 +1,39 @@
+[mysqld]
+#datadir=/var/lib/mysql
+#socket=/var/lib/mysql/mysql.sock
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+# Settings user and group are ignored when systemd is used.
+# If you need to run mysqld under a different user or group,
+# customize your systemd unit file for mariadb according to the
+# instructions in http://fedoraproject.org/wiki/Systemd
+log-bin=mysql-bin
+binlog_format=ROW
+character_set_server = utf8
+thread_concurrency = 8
+long_query_time = 3
+port            = 33060
+socket          = /var/lib/mysql/mysql.sock
+datadir=/var/lib/mysql
+skip-external-locking
+lower_case_table_names=1
+key_buffer_size = 64M
+
+#log-error=/var/lib/mysql/log/error.log
+#log=/var/lib/mysql/log/mysql.log
+#log-slow-queries= /var/lib//mysql/log/slowquery.log
+
+server-id       = 1
+innodb_lock_wait_timeout = 600
+innodb_old_blocks_time=1000
+wait_timeout = 28800
+interactive_timeout= 28800
+[mysqld_safe]
+log-error=/var/log/mariadb/mariadb.log
+pid-file=/var/run/mariadb/mariadb.pid
+
+#
+# include all files from the config directory
+#
+!includedir /etc/my.cnf.d
+

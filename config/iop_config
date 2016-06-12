@@ -1,0 +1,6 @@
+application.properties!!!web.path=http://X/cloud-web$ntp.server.ip=proxy-ip$security.trust.referer=proxy-ip&proxy
+dataSource.properties!!!dataSource.url=jdbc:mysql://X:3306/iop_dev$dataSource.monitor.url=mysql://mycat-ip:3306/iop_dev_monitor&proxy
+filestore.properties!!!file.store.swift.authUrl=http://X/cloud-web/identity/v2.0/tokens&proxy
+mq.properties!!!manager.mq.addresses=X:5672&ips
+quartz.properties!!!org.quartz.dataSource.qzDS.URL=jdbc:mysql://X:3306/iop_dev&proxy
+service.properties!!!swift.store.swift_auth_url=http://X/cloud-web/identity/v2.0/tokens&proxy

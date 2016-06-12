@@ -1,0 +1,200 @@
+#!/usr/bin/python
+import sys
+import os
+import re
+import time
+#from keystones import keystone as ks
+import keystones
+ks = reload(keystones).keystone()
+import  ssh_shake
+ssh = reload(ssh_shake).ssh_shake()
+
+
+def dependence():
+    os.system("tar zxvf ./tools/pip-8.1.1.tar.gz -C /opt/")
+    os.system("cd /opt/pip-8.1.1;python setup.py install")
+    os.system("cd /opt/iop/tools/")
+    os.system("pip install pycrypto")
+    os.system("pip install paramiko")
+    os.chdir("/opt/iop")
+    return
+
+
+
+def ssh_belive_eachother():
+    IP_list = []
+    if not os.path.exists("/opt/pip-8.1.1"):
+       dependence()
+    for i in range(1,len(sys.argv)):
+        IP_list.append(sys.argv[i])
+#    os.cmd("ssh-key gen -t rsa -f ~/.ssh/id_rsa -P ''")
+#    os.cmd("ssh-copy-id -i .ssh/id_rsa.pub root@node2")
+    if not os.path.exists("/root/.ssh/id_rsa.pub"):
+        os.system("ssh-keygen -t rsa -f /root/.ssh/id_rsa -P ''")
+        os.system("cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys")
+        if not os.path.exists("/tmp/iop"):
+            os.system("mkdir /tmp/iop")
+        for ip in IP_list:
+            ssh.ssh_config(ip)
+            time.sleep(1)
+            ssh.ssh_shake_config(ip)
+
+def get_argv():
+#    os.chdir("../")
+    num_host = len(argv)-1
+    global result_info
+    result_info = []
+    for host in range(num_host):
+        IP = sys.argv[host]
+        Info = []
+        Info.append(IP+" ")
+#    print temp
+        temp = os.popen("ssh "+IP_Slaver+" 'uname -n'").readlines()
+#    print temp
+        temp = temp[0].split("\n")[0]
+        domain = temp
+        Info.append(domain+" ")
+#    global name_Master
+        name_Master = ""
+#    global name_slaver
+        tmplist = domain_Master.split(".")
+        print tmplist
+        for x in range(len(tmplist)-1):
+            name = name_Master + tmplist[x]
+        print tmplist
+        Info.append(name+" ")
+        Info.append("node"+str(host+1))
+        result_info.append(info)
+    return result_info
+    
+
+
+def init_env():
+    info_env = get_argv()
+    print info_env
+    print sys.argv[0]
+    print os.getcwd()
+    file_read_hosts = open("./config/hosts","r")
+    file_write_hosts = open("/etc/hosts","w")
+    temp = file_read_hosts.readlines()
+    file_write_hosts.writelines(temp)
+    file_write_hosts.writelines(info_env[0])
+    file_write_hosts.write("\n")
+    file_write_hosts.writelines(info_env[1])
+    file_read_hosts.close()
+    file_write_hosts.close()
+    os.system("scp /etc/hosts node2:/etc/hosts")
+    os.system("cp ./config/IOP.pth /usr/lib/python2.7/site-packages/")
+
+def install_yum_source():
+    os.chdir("./resource/cache/createrepo")
+    os.system("rpm -Uvh libxml2-2.9.1-6.el7_2.2.x86_64.rpm")
+    os.system("rpm -ivh  deltarpm-3.6-3.el7.x86_64.rpm libxml2-python-2.9.1-6.el7_2.2.x86_64.rpm python-deltarpm-3.6-3.el7.x86_64.rpm createrepo-0.9.9-25.el7_2.noarch.rpm")
+    os.chdir("../httpd")
+    os.system("rpm -ivh apr-1.4.8-3.el7.x86_64.rpm apr-util-1.5.2-6.el7.x86_64.rpm httpd-tools-2.4.6-40.el7.centos.x86_64.rpm mailcap-2.1.41-2.el7.noarch.rpm httpd-2.4.6-40.el7.centos.x86_64.rpm")
+    os.system("mkdir /var/www/html/IOP")
+    os.system("systemctl enable httpd")
+    os.system("systemctl start httpd")
+    temp = os.popen("ls "+"../")
+    directories = temp.readlines()
+    for directory in directories:
+	order = "cp -f ../"+directory.split("\n")[0]+"/* /var/www/html/IOP/"
+	print order
+        os.system(order)
+    os.system("createrepo /var/www/html/IOP")
+    os.chdir("../../../")
+    os.system("systemctl disable firewalld;systemctl stop firewalld")
+    return
+
+def set_yum_source(typeof):
+    file_repo = open("/etc/yum.repos.d/IOP.repo","w")
+    file_repo.write("[IOP]\n")
+    if typeof == "master" and result_info != None:
+	file_repo.write("name=IOP\n")
+    file_repo.write("baseurl=http://"+result_info[0][0].split(' ')[0]+"/IOP/\n")
+    file_repo.write("enable=1\n")
+    file_repo.write("gpgcheck=0\n")
+    file_repo.close()  
+    os.system("yum clean all")
+    os.system("yum repolist")
+    for ip in ips:
+        os.system("scp /etc/yum.repo.d/IOP.repo "+ip+":/etc/yum.repo.d/")
+        os.system("ssh "+ip+" \"yum clean all\"")
+        os.system("ssh "+ip+" \"yum repolist\"")
+    return 
+        
+def install_mysql(ips):
+#    os.system("yum -y install mariadb mariadb-server")
+#    os.system("systemctl enable mariadb;systemctl start mariadb")
+    for ip in ips: 
+        os.system('ssh '+ip+' "yum install -y mariadb mariadb-galera-server mariadb-galera-common galera rsync"')
+        os.system("ssh "+ip+" 'systemctl enable mariadb;systemctl start mariadb'")
+    return
+
+
+def set_mysql(ip,num):
+    os.system("ssh node"+str(num)+" echo \"\" > /etc/my.cnf.d/galera.cnf")
+    '''
+    os.system("mysql -u root << EOF 2>/dev/null \ncreate database keystone; \ncreate database iop; \ngrant all privileges on *.* to 'keystone'@'localhost' identified by '123456a?';\ngrant all privileges on *.* to 'keystone'@'%' identified by '123456a?'\nEOF")
+    os.system("ssh node2 'mysql -u root << EOF  \n#create database keystone; \ncreate database iop \nEOF'")
+    os.system("cp -f ./config/my.cnf /etc/my.cnf")
+    os.system("scp ./config/my_slave.cnf node2:/etc/my.cnf")
+    os.system("systemctl restart mariadb")
+    os.system('ssh node2 "systemctl restart mariadb"')
+    temp = os.popen("mysql -u root << EOF 2>/dev/null \nshow master status \nEOF")
+    mysql_master_info=temp.readlines()
+    mysql_master_info=mysql_master_info[1].split('\t')
+    order = "mysql -u root << EOF  \nslave stop; \nchange master to master_host='"+result_info[0][0].split(' ')[0]+"',master_user='keystone',master_password='123456a?',master_log_file=\'"+mysql_master_info[0]+"\',master_log_pos="+mysql_master_info[1]+"; \nslave start; \nEOF"
+    print order
+    os.system('ssh node2 \"'+ order+'\"')
+    '''
+    reader = open("./config/galera.cnf","r")
+    configs = reader.readlines()
+    reader.close()
+    for config in configs:
+        temps = config.split("=")
+        if re.match(r"wsrep_cluster_address=.*$",config):
+            flag = re.search(r"\"(.*)\"",temp[1])
+            if flag:
+                temp[1]="\""+flag.group(1)+"node"+str(num)+"\""
+                os.system("ssh node"+str(num)+" \"echo "+temps[0]+"="+temps[1]+" >> /etc/my.cnf.d/galera.cnf")
+        elif re.match(r"wsrep_node_name=.*$"):
+            temps[1] = "node"+str(num)
+            os.system("ssh node"+str(num)+" \"echo "+temps[0]+"="+temps[1]+" >> /etc/my.cnf.d/galera.cnf")
+        elif re.match(r"wsrep_node_address=.*$"):
+            temps[1] = ip
+            os.system("ssh node"+str(num)+" \"echo "+temps[0]+"="+temps[1]+" >> /etc/my.cnf.d/galera.cnf")
+        else :
+            os.system("ssh node"+str(num)+" \"echo "+temps[0]+"="+temps[1]+" >> /etc/my.cnf.d/galera.cnf")
+    os.system("ssh node"+str(num)+" \"systemctl restart mariadb.service\"")
+    return
+
+
+def install_set_rabbitMq(ips):
+    for ip in ips:
+        os.system('ssh '+ip+' "yum -y install rabbitmq-server"')
+        os.system("scp ./config/.erlang.cookie "+ip+"://var/lib/rabbitmq/")
+        os.system("ssh "+ip+" rabbitmq-server -detached")
+        order = "\"rabbitmqctl stop_app;rabbitmqctl join_cluster rabbit@"+result_info[0][2]+";rabbitmqctl start_app\""
+        os.system('ssh '+ip+' '+order)
+    os.system("rabbitmqctl add_user openstack 123456a?;rabbitmqctl set_user_tags openstack administrator")
+    return
+
+ 
+def main():
+     print "hello"
+#    init_env()
+#    install_yum_source()
+#    set_yum_source("master")
+#    set_yum_source("slaver")
+#    install_mysql()
+#    set_mysql()
+#    install_set_rabbitMq()
+#    ks = __import__('keystones').keystone()
+#    ks = reload(keystones).keystone()  
+#    ip = result_info[0][0].split(" ")[0]
+#    ks.main(ip)
+
+if __name__ == "__main__":
+    main()
+    

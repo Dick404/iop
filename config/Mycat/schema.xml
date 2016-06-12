@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://org.opencloudb/">
+
+       <schema name="information_schema" checkSQLschema="false" dataNode="information_schema">
+        </schema>
+       <schema name="mysql" checkSQLschema="false" dataNode="mysql">
+        </schema>
+        <schema name="performance_schema" checkSQLschema="false" dataNode="performance_schema">
+        </schema>
+        <schema name="iop_dev" checkSQLschema="false" dataNode="iop_dev">
+        </schema>
+        <schema name="iop_dev_monitor" checkSQLschema="false" dataNode="iop_dev_monitor">
+        </schema>
+ 	<schema name="cloud_storage_swift" checkSQLschema="false" dataNode="cloud_storage_swift">
+        </schema>
+ 	<schema name="keystone" checkSQLschema="false" dataNode="keystone">
+        </schema>
+
+
+        <dataNode name="information_schema" dataHost="mariadb" database="information_schema" />
+        <dataNode name="performance_schema" dataHost="mariadb" database="performance_schema" />
+        <dataNode name="iop_dev_monitor" dataHost="mariadb" database="iop_dev_monitor" />
+        <dataNode name="iop_dev" dataHost="mariadb" database="iop_dev" />
+        <dataNode name="keystone" dataHost="mariadb" database="keystone" />
+        <dataNode name="mysql" dataHost="mariadb" database="mysql" />
+        <dataNode name="cloud_storage_swift" dataHost="mariadb" database="cloud_storage_swift" />
+        
+	<!--
+      <dataHost name="mariadb" maxCon="900" minCon="10" balance="1" writeType="0" switchType="1"  dbType="mysql" dbDriver="native">
+		<heartbeat>select user()</heartbeat>
+         	<writeHost host="hostM1" url="10.110.19.240:3306"  user="root" password="123456a?">
+			<readHost host="hostS2" url="10.110.19.241:3306" user="root" password="123456a?"/>
+               </writeHost>
+	-->
+        <dataHost name="mariadb" maxCon="900" minCon="90" balance="1" writeType="0" switchType="3"  dbType="mysql" dbDriver="native">
+		<heartbeat>show status like 'wsrep%'</heartbeat>
+		<!-- can have multi write hosts -->
+	</dataHost>
+
+</mycat:schema>
