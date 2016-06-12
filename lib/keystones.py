@@ -127,23 +127,28 @@ class mariaDB():
     def __init__(self):
         self.__Excute = os.system
 
-    def install(self):
-        self.__Excute("yum install -y mariadb-server")
+    def install(self,monit="127.0.0.1"):
+        self.__Excute("ssh "+monit+" yum install -y mariadb-server")
         return
 
-    def init(self):
-        self.__Excute("mysql << EOF \ncreate database keystone;\nGRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '123456a?' WITH GRANT OPTION;\nGRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '123456a?' WITH GRANT OPTION;\nGRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'"+os.popen("hostname").readlines()[0].split("\n")[0]+"' IDENTIFIED BY '123456a?' WITH GRANT OPTION;\nFLUSH PRIVILEGES;\nEOF")
-        self.__Excute("systemctl enable mariadb.service")
+    def config(self,monit="127.0.0.1"):
+        self.__Excute("scp conifg/my.cnf root@"+monit+":/etc/")
         return
 
-    def run(self):
-        self.__Excute("systemctl start mariadb.service")
+    def init(self,monit):
+        self.__Excute("ssh "+monit+" \"mysql << EOF \ncreate database keystone;\nGRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '123456a?' WITH GRANT OPTION;\nGRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '123456a?' WITH GRANT OPTION;\nGRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'"+os.popen("hostname").readlines()[0].split("\n")[0]+"' IDENTIFIED BY '123456a?' WITH GRANT OPTION;\nFLUSH PRIVILEGES;\nEOF\"")
+        self.__Excute("ssh "+monit+" systemctl enable mariadb.service")
         return
 
-    def operator(self):
-        self.install()
-        self.run()
-        self.init()
+    def run(self,monit):
+        self.__Excute("ssh "+monit+" systemctl start mariadb.service")
+        return
+
+    def operator(self,monit="127.0.0.1"):
+        self.install(monit)
+        self.config(monit)
+        self.run(monit)
+        self.init(monit)
 
 class RabbitMQ(object):
 
@@ -154,23 +159,23 @@ class RabbitMQ(object):
     def __init__(self):
         self.__Excute = os.system
     
-    def install(self):
-        self.__Excute("yum -y install rabbitmq-server")
+    def install(self,monit):
+        self.__Excute("ssh "+monit+" yum -y install rabbitmq-server")
         return
 
-    def init(self):
-        self.__Excute("rabbitmq-plugins enable rabbitmq_management;systemctl enable rabbitmq-server;systemctl start rabbitmq-server;")
-        self.__Excute("rabbitmqctl add_user openstack 123456a?;rabbitmqctl set_user_tags openstack administrator")
+    def init(self,monit):
+        self.__Excute("ssh "+monit+" rabbitmq-plugins enable rabbitmq_management;systemctl enable rabbitmq-server;systemctl start rabbitmq-server;")
+        self.__Excute("ssh "+monit+" rabbitmqctl add_user openstack 123456a?;rabbitmqctl set_user_tags openstack administrator")
         return
 
-    def run(self):
-        self.__Excute("systemctl start rabbitmq-server;")
+    def run(self,monit):
+        self.__Excute("ssh "+monit+" systemctl start rabbitmq-server;")
         return
 
-    def operator(self):
-        self.install()
-        self.run()
-        self.init()
+    def operator(self,monit):
+        self.install(monit)
+        self.run(monit)
+        self.init(monit)
 
 if __name__ == "__main__":
     if len(sys.argv)==1:

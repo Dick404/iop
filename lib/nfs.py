@@ -42,7 +42,7 @@ class nfs_server():
                 x = re.search(r"Disk /dev/\w+: (\d+\.\d+)GB",d)
                 size = x.group(1)
         self.__Excute("parted -s "+dev+" mklabel msdos")
-        self.__Excute("parted -s "+dev+" mkpart primary 1 "+size)
+        self.__Excute("parted -s "+dev+" mkpart primary 1 "+sizea+"GB")
         self.__Excute("mkfs.ext4 "+dev+"1")
         self.__Excute("mount "+dev+"1 /storage")
         writer = open("/etc/fstab","a+")
@@ -53,7 +53,7 @@ class nfs_server():
     def init(self,ips,dev):
         self.config(ips,dev)
         self.mount_disk(dev)
-        self.__Excute("ystemctl enable nfs-server.service")
+        self.__Excute("systemctl enable nfs-server.service")
         self.__Excute("systemctl enable rpcbind.service")
         return
 
@@ -66,7 +66,7 @@ class nfs_client():
     
     def install(self,ips):
         for ip in ips:
-            self.__Excute("ssh "+ip" yum install -y nfs-utils")
+            self.__Excute("ssh "+ip+" yum install -y nfs-utils")
         return
 
     def run(self,ips):
@@ -85,13 +85,13 @@ class nfs_client():
                 x=re.search(r"    inet (\d+\.\d+\.\d+\.\d+)/.*$",d)
                 local_ip.append(x.group(1))
         for ip in ips:
-            self.__Excute("ssh "+ip+" mount -t nfs4 "+(local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0])+":/ /storage")
+            self.__Excute("ssh "+ip+" \"mount -t nfs4 "+(local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0])+":/ /storage\"")
             self.__Excute("ssh "+ip+" echo \""+(local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0])+":/ /storage nfs4 rw,hard,intr,proto=tcp,port=2049,noauto 0 0 \">> /etc/fstab")     #fstab arguments need check
 
-   def init(self,ips):
-       for ip in ips:
-           self.__Excute("ssh "+ip+" \"if [ ! -x /storage ];then\n mkdir /storage \n fi\"")
-       self.config(ips)
+    def init(self,ips):
+        for ip in ips:
+            self.__Excute("ssh "+ip+" \"if [ ! -x /storage ];then\n mkdir /storage \n fi\"")
+        self.config(ips)
        
 if __name__ == "__main__":
     T = test()
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     server.install()
     client.install(ips)
     server.init(ips,dev)
-    server.run()
+    server.run(ips)
     client.run(ips)
     client.init(ips)
 

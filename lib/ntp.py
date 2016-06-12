@@ -39,9 +39,8 @@ class ntp():
             temp = re.search("inet (\d+\.\d+\.\d+\.\d+)/.*$",d)
             if temp and temp.group(1) != "127.0.0.1":
                 local_ip.append(temp.group(1))
-
         for ip in ips:
-            self.__Excute("ssh "+ip+" echo \"0 */1 * * * root ntpdate "+local_ip[0]+"\">> /etc/crontab")
+            self.__Excute("ssh "+ip+" 'echo \"0 */1 * * * root ntpdate "+local_ip[0]+"\">> /etc/crontab'")
         return
     
 if __name__ == "__main__":

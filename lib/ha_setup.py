@@ -14,11 +14,9 @@ from report import recorder
 
 def main(ips,dev,monitor="127.0.0.1"):
     E = recorder()
-    if E.test("haproxy"):
-        ha_operator = ha()
-        ns_operator = ns()
-        nc_operator = nc()
-    if 
+    ha_operator = ha()
+    ns_operator = ns()
+    nc_operator = nc()
     mycat = Mycat()
     ntper = ntp()
     key = keystone()
@@ -31,7 +29,7 @@ def main(ips,dev,monitor="127.0.0.1"):
         ns_operator.install()
         ns_operator.init(ips,dev)
         ns_operator.run()
-        E.reader("nfs_server")
+        E.record("nfs_server")
     if E.test("nfs_client"):
         nc_operator.install(ips)
         nc_operator.init(ips)
