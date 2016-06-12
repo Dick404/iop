@@ -66,7 +66,7 @@ class mysql_installer():
             #os.system("ssh node"+str(num+2)+" \"/usr/libexec/mysqld --wsrep-new-cluster --user=root \"&")
             os.system("ssh node"+str(num+2)+" /etc/init.d/mysql bootstrap")
         else :
-	        print "slaver is starting================================"
+	    print "slaver is starting================================"
 	    #os.system("ssh node"+str(num+2)+" mysql_install_db")
 	    #os.system("ssh node"+str(num+2)+" systemctl stop firewalld.service;systemctl disable firewalld.service")
             os.system("ssh node"+str(num+2)+" /etc/init.d/mysql start")

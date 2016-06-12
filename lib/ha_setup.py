@@ -10,6 +10,8 @@ from nfs import nfs_client as nc
 from Mycat import Mycat
 from ntp import ntp
 from keystones import keystone
+from keystones import mariaDB as my
+from keystones import RabbitMQ as rabbit
 from report import recorder
 
 def main(ips,dev,monitor="127.0.0.1"):
@@ -20,6 +22,8 @@ def main(ips,dev,monitor="127.0.0.1"):
     mycat = Mycat()
     ntper = ntp()
     key = keystone()
+    M = my()
+    R = rabbit()
     if E.test("haproxy"):
         ha_operator.haproxy_install()
         ha_operator.haproxy_config(ips)
@@ -43,6 +47,8 @@ def main(ips,dev,monitor="127.0.0.1"):
         ntper.client(ips)
         E.record("ntp")
     if E.test("keystone"):
+        M.operator(monitor)
+        R.operator(monitor)
         key.main(monitor)
         E.record("keystone")
     return
