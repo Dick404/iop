@@ -91,11 +91,11 @@ class iopWeb():
 
     def run(self,ips):
         for ip in ips:
-            Excute("ssh "+ip+" export PATH=PATH:/opt/jdk/bin;export JAVA_HOME=/opt/jdk;/opt/tomcat/bin/startup.sh")
+            Excute("ssh "+ip+" \"export PATH=\$PATH:/opt/jdk/bin;export JAVA_HOME=/opt/jdk;/opt/tomcat/bin/startup.sh\"")
 
     def stop(self,ips):
         for ip in ips:
-            Excute("ssh "+ip+" export PATH=PATH:/opt/java/bin/opt/tomcat/bin/stop.sh")
+            Excute("ssh "+ip+" export PATH=\$PATH:/opt/java/bin/opt/tomcat/bin/stop.sh")
         return
 
 if __name__ == "__main__":

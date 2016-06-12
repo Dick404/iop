@@ -52,7 +52,7 @@ class Mycat():
         return
 
     def run(self):
-        self.__Excute("export JAVA_HOME=/usr/local/java;export path=\$path\:\$JAVA_HOME/bin;/usr/local/mycat/bin/mycat start")
+        self.__Excute("export JAVA_HOME=/usr/local/java;export PATH=\$PATH\:\$JAVA_HOME/bin;/usr/local/mycat/bin/mycat start")
         if os.path.exists("/usr/local/mycat/logs/mycat.pid"):
             return True
         else :
