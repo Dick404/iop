@@ -36,13 +36,13 @@ class nfs_server():
         reader = os.popen("parted -s "+dev+" print")
         size = None
         data = reader.readlines()
-        readr.close()
+        reader.close()
         for d in data:
             if re.match(r"Disk /dev/.*",d):
                 x = re.search(r"Disk /dev/\w+: (\d+\.\d+)GB",d)
                 size = x.group(1)
         self.__Excute("parted -s "+dev+" mklabel msdos")
-        self.__Excute("parted -s "+dev+" mkpart primary 1 "+sizea+"GB")
+        self.__Excute("parted -s "+dev+" mkpart primary 1 "+size+"GB")
         self.__Excute("mkfs.ext4 "+dev+"1")
         self.__Excute("mount "+dev+"1 /storage")
         writer = open("/etc/fstab","a+")

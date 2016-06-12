@@ -34,7 +34,7 @@ def main(ips,dev,monitor="127.0.0.1"):
         nc_operator.install(ips)
         nc_operator.init(ips)
         nc_operator.config(ips)
-        nc_operator.run()
+        nc_operator.run(ips)
         E.record("nfs_client")
     if E.test("ntp"):
         ntper.install(ips)

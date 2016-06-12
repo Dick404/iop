@@ -85,8 +85,8 @@ class iopWeb():
     def sql_import(self,ips):
         for ip in ips:
             Excute("scp ./config/iop-web/iop_dev.sql ./config/iop-web/iop_dev_monitor.sql root@"+ip+":/tmp")
-            Excute("ssh "+ip+" \"mysql -e 'source /tmp/iop_dev_monitor.sql'\"")
-            Excute("ssh "+ip+" \"mysql -e 'source /tmp/iop_dev.sql'\"")
+            Excute("ssh "+ip+" \"mysql -p123456a? -e 'source /tmp/iop_dev_monitor.sql'\"")
+            Excute("ssh "+ip+" \"mysql -p123456a? -e 'source /tmp/iop_dev.sql'\"")
 
 
     def run(self,ips):

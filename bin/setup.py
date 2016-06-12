@@ -159,7 +159,7 @@ def main():
         Y.set_yum_source(ips_worker,proxy)
         record.record("yum-source")
     worker.main(ips_worker,proxy)
-    ha_setup.main(ips,dev[0].split("\n")[0],monitor)
+    ha_setup.main(ips_worker,dev[0].split("\n")[0],monitor)
 
 #    dependence()
 #    ssh_belive_eachother()

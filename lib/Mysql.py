@@ -100,7 +100,7 @@ class mysql_installer():
     def init_mysql(self):
 	os.system("ssh node2 mysql -u root -p123456a? << EOF 2>/dev/null \ncreate database keystone; \ncreate database iop_dev; \ncreate database iop_dev_monitor;\ngrant all privileges on keystone.* to 'keystone'@'localhost' identified by '123456a?';\ngrant all privileges on keystone.* to 'keystone'@'%' identified by '123456a?'\nEOF")
         os.system("ssh node2 mysql -u root -p123456a? << EOF 2>/dev/null \ngrant all privileges on iop_dev.* to 'dev'@'localhost' identified by '123456a?';\ngrant all privileges on iop_dev.* to 'dev'@'%' identified by '123456a?';\ngrant all privileges on iop_dev_monitor.* to 'dev'@'localhost' identified by '123456a?';\ngrant all privileges on iop_dev_monitor.* to 'dev'@'%' identified by '123456a?';\nEOF")
-        os.system("scp config/swift/sql/cloud_storage_swift.sql root@node2:/tmp;ssh node2 \"mysql -e 'source /tmp/cloud_storage_swift.sql'\"")   #command need "" and ''
+        os.system("scp config/swift/sql/cloud_storage_swift.sql root@node2:/tmp;ssh node2 \"mysql -p123456a? -e 'source /tmp/cloud_storage_swift.sql'\"")   #command need "" and ''
         return
 
     def operator(self,ips):
