@@ -47,8 +47,7 @@ class yum_installer():
 	    print "now check the "+ip+"'s status........"
 	    print "scp /etc/yum.repos.d/IOP.repo "+ip+":/etc/yum.repo.d/"
             os.system("ssh "+ip+" mkdir /etc/yum.repos.d/temp")
-            os.system("ssh "+ip+" mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/temp")
-            os.system("scp /etc/yum.repos.d/IOP.repo "+ip+":/etc/yum.repos.d/")
+            os.system("ssh "+ip+" \"mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/temp\";scp /etc/yum.repos.d/IOP.repo "+ip+":/etc/yum.repos.d/")
             os.system("ssh "+ip+" \"yum clean all\"")
             os.system("ssh "+ip+" \"yum repolist\"")
         return 

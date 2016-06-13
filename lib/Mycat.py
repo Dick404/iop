@@ -28,7 +28,7 @@ class Mycat():
         return
 
     def config(self,ips):
-        self.__Excute("rm- rf /usr/local/mycat/conf/server.xml")
+        self.__Excute("rm -rf /usr/local/mycat/conf/server.xml")
         self.__Excute("cp -f config/Mycat/server.xml /usr/local/mycat/conf/server.xml")
         writer = open("/usr/local/mycat/conf/schema.xml","w")
         writer.write("<?xml version=\"1.0\"?>\n")
@@ -52,7 +52,7 @@ class Mycat():
         return
 
     def run(self):
-        self.__Excute("export JAVA_HOME=/usr/local/java;export PATH=\$PATH\:\$JAVA_HOME/bin;/usr/local/mycat/bin/mycat start")
+        self.__Excute("export JAVA_HOME=/usr/local/java;export PATH=$PATH:$JAVA_HOME/bin;/usr/local/mycat/bin/mycat start")
         if os.path.exists("/usr/local/mycat/logs/mycat.pid"):
             return True
         else :
