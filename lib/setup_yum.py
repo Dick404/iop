@@ -8,8 +8,10 @@ import logging as log
 
 class yum_installer():
 
+    __Excute = None
+
     def __init__(self):
-        pass
+        self.__Excute = os.system
 
     def install_yum_source(self):
         os.chdir("./resource/cache/createrepo")
@@ -34,6 +36,7 @@ class yum_installer():
         return
 
     def set_yum_source(self,ips,proxy):
+        self.__Excute("mkdir /etc/yum.repo.d/temp;mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/temp/;")
         file_repo = open("/etc/yum.repos.d/IOP.repo","w")
         file_repo.write("[IOP]\n")
         file_repo.write("name=IOP\n")

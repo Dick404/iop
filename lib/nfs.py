@@ -87,7 +87,7 @@ class nfs_client():
                 local_ip.append(x.group(1))
         for ip in ips:
             self.__Excute("ssh "+ip+" \"mount -t nfs4 "+(local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0])+":/storage /storage\"")
-            self.__Excute("ssh "+ip+" echo \""+(local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0])+":/storage /storage nfs4 rw,hard,intr,proto=tcp,port=2049,noauto 0 0 \">> /etc/fstab")     #fstab arguments need check
+            self.__Excute("ssh "+ip+" \'echo \""+(local_ip[1] if local_ip[0]=="127.0.0.1" else local_ip[0])+":/storage /storage nfs4 rw,hard,intr,proto=tcp,port=2049,noauto 0 0 \">> /etc/fstab\'")     #fstab arguments need check
 
     def init(self,ips):
         for ip in ips:

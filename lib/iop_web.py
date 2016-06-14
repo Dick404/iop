@@ -6,6 +6,7 @@ import os
 from testUnit import tester
 
 class iopWeb():
+
     global Excute
     Excute = os.system
 
@@ -14,7 +15,6 @@ class iopWeb():
 
 
     def config(self,ips,proxy):
-        print "hello"
         for ip in ips:
             Excute("ssh "+ip+" \"if [ ! -x /opt/tomcat ];then\n mkdir /opt/tomcat /opt/jdk\n fi\"")
             Excute("scp ./resource/cache/jdk/java.tar.gz root@"+ip+":/tmp")
@@ -22,6 +22,7 @@ class iopWeb():
             Excute("ssh "+ip+" tar zxvf /tmp/java.tar.gz -C /opt/jdk")
             Excute("ssh "+ip+" tar zxvf /tmp/tomcat.tar.gz -C /opt/tomcat")
             Excute("scp -r ./resource/web/cloud-web/  root@"+ip+":/opt/tomcat/webapps/")
+            Excute("ssh "+ ip +" \"echo -e 'export JAVA_HOME=/opt/java\nexprot PATH=$PATH:$JAVA_HOME/bin' >> /root/.bash_profile\"")
         self.configure(proxy,ips)
         self.sql_import(ips)
         Excute("ssh "+ips[0]+" mysql << EOF\n use iop_dev;\nupdate am_endpoint set url='http://"+proxy+"/v1/AUTH_%(tenant_id)s' where service_id='service_swift'\nEOF")
